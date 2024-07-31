@@ -1,3 +1,6 @@
+import * as Tabs from '@radix-ui/react-tabs'
+import { useState } from 'react'
+
 import { CreateTodoForm } from '@/client/components/CreateTodoForm'
 import { TodoList } from '@/client/components/TodoList'
 
@@ -17,6 +20,8 @@ import { TodoList } from '@/client/components/TodoList'
  */
 
 const Index = () => {
+  const [selectedStatus, setSelectedStatus] = useState('TabAll')
+
   return (
     <main className="mx-auto w-[480px] pt-12">
       <div className="rounded-12 bg-white p-8 shadow-sm">
@@ -25,7 +30,56 @@ const Index = () => {
         </h1>
 
         <div className="pt-10">
-          <TodoList />
+          <Tabs.Root
+            className="TabsRoot"
+            defaultValue="TabAll"
+            onValueChange={(value) => setSelectedStatus(value)}
+          >
+            <Tabs.List
+              className="TabsList space-x-3"
+              aria-label="Manage Todo List"
+            >
+              <Tabs.Trigger
+                className={`TabsTrigger rounded-[20px] border ${
+                  selectedStatus === 'TabAll' && 'bg-[#334155] text-white'
+                } px-5 py-2`}
+                value="TabAll"
+              >
+                All
+              </Tabs.Trigger>
+              <Tabs.Trigger
+                className={`TabsTrigger rounded-[20px] border ${
+                  selectedStatus === 'TabPending' && 'bg-[#334155] text-white'
+                } px-5 py-2`}
+                value="TabPending"
+              >
+                Pending
+              </Tabs.Trigger>
+              <Tabs.Trigger
+                className={`TabsTrigger rounded-[20px] border ${
+                  selectedStatus === 'TabCompleted' && 'bg-[#334155] text-white'
+                } px-5 py-2`}
+                value="TabCompleted"
+              >
+                Completed
+              </Tabs.Trigger>
+            </Tabs.List>
+            <Tabs.Content className="TabsContent" value="TabAll">
+              <div className="pt-10">
+                <TodoList statusTodo={['completed', 'pending']} />
+              </div>
+            </Tabs.Content>
+            <Tabs.Content className="TabsContent" value="TabPending">
+              <div className="pt-10">
+                <TodoList statusTodo={['pending']} />
+              </div>
+            </Tabs.Content>
+            <Tabs.Content className="TabsContent" value="TabCompleted">
+              <div className="pt-10">
+                <TodoList statusTodo={['completed']} />
+              </div>
+            </Tabs.Content>
+          </Tabs.Root>
         </div>
 
         <div className="pt-10">

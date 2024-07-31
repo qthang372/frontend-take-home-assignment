@@ -28,6 +28,15 @@ export const CreateTodoForm = () => {
 
   const apiContext = api.useContext()
 
+  const handleEnterButton = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      createTodo({
+        body: todoBody,
+      })
+      setTodoBody('')
+    }
+  }
+
   const { mutate: createTodo, isLoading: isCreatingTodo } =
     api.todo.create.useMutation({
       onSuccess: () => {
@@ -50,9 +59,11 @@ export const CreateTodoForm = () => {
           setTodoBody(e.target.value)
         }}
         className="flex-1 px-4 text-base placeholder:text-gray-400 focus:outline-none"
+        onKeyDown={handleEnterButton}
       />
 
       <button
+        className="rounded-[20px] bg-[#334155] px-5 py-2 text-white"
         type="button"
         disabled={isCreatingTodo}
         onClick={() => {
